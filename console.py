@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,16 +116,41 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        args = shlex.split(args)
+
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        new_instance = HBNBCommand.classes[args[0]](str(args[1:]))
         storage.save()
         print(new_instance.id)
         storage.save()
+
+        if len(args) > 1:
+            # prepare params
+            for param in args[1:]:
+                val = param.split('=')
+
+                if len(val) != 2:
+                    continue
+
+                # Format string
+                if '_' in val[1]:
+                    val[1] = val[1].replace('_', ' ')
+
+                # type cast as necessary
+                if val[0] in HBNBCommand.types:
+                    val[1] = HBNBCommand.types[val[0]](val[1])
+
+                # update dictionary with name, value pair
+                new_instance.__dict__.update({val[0]: val[1]})
+
+            new_instance.save()  # save updates to file
+
 
     def help_create(self):
         """ Help information for the create method """
