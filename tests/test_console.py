@@ -50,9 +50,9 @@ class test_Console(unittest.TestCase):
 			self.console.onecmd('create BaseModel price=123.45')
 			output = self.mock_stdout.getvalue().strip()
 			self.assertTrue(len(output) > 0)
-			self.assertTrue(isinstance(output, str))
+			self.assertTrue(isinstance(output, str)) # output should be an instance of a float class (do this also for int and multiple input)
 		new_instance = storage.all()["BaseModel.{}".format(output)]
-		self.assertEqual(new_instance.price, 123.45)
+		self.assertEqual(new_instance.price, 123.45) # new_instance.price is a string (do this also for int and multiple input)
 		self.mock_stdout.truncate(0)
 		self.mock_stdout.seek(0)
 
