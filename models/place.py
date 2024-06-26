@@ -40,7 +40,9 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if os.getenv('HBNB_TYPE_STORAGE') != 'db':
-        from models import storage, Review, Amenity
+        from models import storage
+        from models.review import Review
+        from models.amenity import Amenity
 
         @property
         def reviews(self):
