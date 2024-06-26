@@ -137,10 +137,6 @@ class HBNBCommand(cmd.Cmd):
                 if len(val) != 2:
                     continue
 
-                # type cast as necessary
-                if val[0] in HBNBCommand.types:
-                    val[1] = HBNBCommand.types[val[0]](val[1])
-
                 # Format string
                 if '_' in val[1]:
                     val[1] = val[1].replace('_', ' ')
