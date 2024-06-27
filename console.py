@@ -150,15 +150,19 @@ class HBNBCommand(cmd.Cmd):
 
                 # Integer formatting
                 elif val[1].isdigit():
-                    val[1] = int(val[1])
+                    pass
+                    # val[1] = int(val[1])
 
                 # Float formatting
                 elif '.' in val[1]:
+                    pass
+                    """
                     try:
                         val[1] = float(val[1])
 
                     except ValueError:
                         pass
+                    """
                 else:
                     continue
 
