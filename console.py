@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
+import re
 import cmd
 import sys
 import shlex
@@ -116,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """ Create an object of any class"""
-        args = shlex.split(arg)
+        args = arg.split()
         if not args:
             print("** class name missing **")
             return
@@ -137,19 +138,31 @@ class HBNBCommand(cmd.Cmd):
                 if len(val) != 2:
                     continue
 
-                # Format string
-                if '_' in val[1]:
+                # String formatting
+                if val[1][0] == '"' and val[1][-1] == '"':
+
+                    # Removing double quotes
+                    val[1] = val[1][1:-1]
+
+                    # Replacing underscores with spaces
                     val[1] = val[1].replace('_', ' ')
 
+                    # Escaping embedded double quotes
+                    val[1] = re.sub(r'\\"', '"', val[1])
+
+                # Integer formatting
                 elif val[1].isdigit():
                     val[1] = int(val[1])
 
+                # Float formatting
                 elif '.' in val[1]:
                     try:
                         val[1] = float(val[1])
 
                     except ValueError:
                         pass
+                else:
+                    continue
 
                 # update dictionary with name, value pair
                 new_instance.__dict__.update({val[0]: val[1]})
