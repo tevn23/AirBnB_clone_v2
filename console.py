@@ -165,7 +165,7 @@ class HBNBCommand(cmd.Cmd):
                 # update dictionary with name, value pair
                 new_instance.__dict__.update({val[0]: val[1]})
 
-            new_instance.save()  # save updates to file
+        new_instance.save()  # save updates to file
 
     def help_create(self):
         """ Help information for the create method """
