@@ -150,19 +150,15 @@ class HBNBCommand(cmd.Cmd):
 
                 # Integer formatting
                 elif val[1].isdigit():
-                    pass
-                    # val[1] = int(val[1])
+                    val[1] = int(val[1])
 
                 # Float formatting
                 elif '.' in val[1]:
-                    pass
-                    """
                     try:
                         val[1] = float(val[1])
 
                     except ValueError:
                         pass
-                    """
                 else:
                     continue
 
@@ -200,7 +196,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(str(storage.all()[key]))
+            print(storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
