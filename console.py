@@ -127,7 +127,6 @@ class HBNBCommand(cmd.Cmd):
 
         new_instance = HBNBCommand.classes[args[0]](str(args[1:]))
         print(new_instance.id)
-        new_instance.save()
 
         if len(args) > 1:
             # prepare params
