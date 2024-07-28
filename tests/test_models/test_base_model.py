@@ -17,14 +17,11 @@ class test_basemodel(unittest.TestCase):
         self.name = 'BaseModel'
         self.value = BaseModel
 
-    def setUp(self):
-        """ """
-        pass
-
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+
+        except Exception:
             pass
 
     def test_default(self):
@@ -59,8 +56,15 @@ class test_basemodel(unittest.TestCase):
     def test_str(self):
         """ """
         i = self.value()
+
+        dict_val = {}
+        dict_val.update(i.__dict__)
+
+        if '_sa_instance_state' in dict_val:
+            del dict_val['_sa_instance_state']
+
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+                         dict_val))
 
     def test_todict(self):
         """ """
@@ -74,12 +78,14 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
-    #def test_kwargs_one(self):
-        #""" """
-        #n = {'Name': 'test'}
-        # with self.assertRaises(KeyError):
-         #   print(self.value(**n))
-         #   new = self.value(**n)
+    # Test case purpose unknown
+    """
+    def test_kwargs_one(self):
+        n = {'Name': 'test'}
+        with self.assertRaises(KeyError):
+            print(self.value(**n))
+            new = self.value(**n)
+            """
 
     def test_id(self):
         """ """

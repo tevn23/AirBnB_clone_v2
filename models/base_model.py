@@ -7,10 +7,15 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
 
-    id = Column(String(60), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = Column(
+            String(60),
+            primary_key=True,
+            default=lambda: str(uuid.uuid4())
+            )
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
@@ -22,11 +27,15 @@ class BaseModel:
             self.updated_at = datetime.utcnow()
         else:
             if 'updated_at' in kwargs:
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(
+                                        kwargs['updated_at'],
+                                        '%Y-%m-%dT%H:%M:%S.%f'
+                                        )
             if 'created_at' in kwargs:
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.strptime(
+                                        kwargs['created_at'],
+                                        '%Y-%m-%dT%H:%M:%S.%f'
+                                        )
             if '__class__' in kwargs:
                 del kwargs['__class__']
 
@@ -36,10 +45,14 @@ class BaseModel:
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
 
-        if '_sa_instance_state' in self.__dict__:
-            del self.__dict__['_sa_instance_state']
-            
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        str_fmt = {}
+
+        # excludes '_sa_instance_state' from string output
+        for key, value in self.__dict__.items():
+            if key != '_sa_instance_state':
+                str_fmt[key] = value
+
+        return '[{}] ({}) {}'.format(cls, self.id, str_fmt)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
